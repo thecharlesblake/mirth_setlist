@@ -31,10 +31,18 @@ function processGameData(data) {
         var prop = data[0][i];
 		allProperties.push(prop);
         
-        // Adds the allProperties to the select
-        $('#property_select')
-            .append('<option value="' + prop + '">' + prop + '</option>');
+        // Add the filter
+        $('#filters')
+            .append('<label class="btn btn-primary">\n' +
+                '<input type="checkbox" autocomplete="off" value="' + prop
+                    + '"> ' + prop + '\n' +
+                '</label>')
 	}
+
+    // Add filter logic
+    $('#filters label').click(function() {
+        onChange($(this).children().attr('value'), !$(this).hasClass('active'));
+    })
 
     for(var i = 1; i < data.length; i++) {
 		var game = data[i][0];
@@ -48,16 +56,9 @@ function processGameData(data) {
 		}
     }
 	console.log(games);
-
-    // Init the select
-    $('#property_select').multiselect({
-        onChange: onChange
-    });
 }
 
-function onChange(option, checked) {
-    var property = $(option).val();
-
+function onChange(property, checked) {
     if (checked) {
         if (selectedProperties.indexOf(property) <= -1) {
             selectedProperties.push(property);
@@ -66,12 +67,12 @@ function onChange(option, checked) {
         if (selectedProperties.indexOf(property) > -1) {
             selectedProperties = selectedProperties.filter(p => p !== property);
         }
-    } 
+    }
     updateTable();
 }
 
 function updateTable() {
-    $('#game_table tr').remove();
+    $('#game_table tbody tr').remove();
 
     for (game in games) {
         var props = games[game];
