@@ -164,6 +164,6 @@ function addGameToTable(game) {
         }
     }
 
-    $('#game_table > tbody:last-child').append('<tr><td><span>' + game + '</span>'
-        + propDivs + '</td></tr>');
+    $('#game_table > tbody:last-child').append('<tr><td><span class="game-row">' +
+        game + '</span></td><td>' + propDivs + '</td></tr>');
 }

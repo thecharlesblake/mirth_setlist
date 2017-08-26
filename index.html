@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Blind Mirth Setlist</title>
+    <title>Blind Mirth: Setlist</title>
     <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
         integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
@@ -22,20 +22,28 @@
     <script type="text/javascript"
         src="lib/bootstrap-multiselect.js"></script>
     <link rel="stylesheet" href="lib/bootstrap-multiselect.css" type="text/css"/>
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
 
     <link rel="stylesheet" href="css.css">
     <script src="js.js"></script>
 </head>
 
 <body onload="onload()">
-    <div id="reg_filters" class="btn-group filters" data-toggle="buttons">
-    </div>
-    <div id="person_filters" class="btn-group filters" data-toggle="buttons">
+    <div id="header">Blind Mirth: Setlist</div>
+	<div class="filter-wrapper explain"><b>Filters 🡻</b> (select multiple!)</div>
+	<div class="filter-wrapper">
+    	<div id="reg_filters" class="btn-group filters" data-toggle="buttons">
+    	</div>
+	</div>
+	<div class="filter-wrapper">
+    	<div id="person_filters" class="btn-group filters" data-toggle="buttons">
+		</div>
     </div>
     <table id="game_table" class="table">
         <thead>
             <tr>
                 <th>Game</th>
+                <th>Features</th>
             </tr>
         </thead>
         <tbody>
