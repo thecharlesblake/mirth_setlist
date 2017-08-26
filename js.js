@@ -2,6 +2,7 @@ var sheetURL = "https://sheets.googleapis.com/v4/spreadsheets/1KTv54urT87_WelAXl
 
 var games = {};
 var allProperties = [];
+var propids = {};
 var selectedProperties = [];
 
 function onload() {
@@ -44,8 +45,8 @@ function processGameData(data) {
     }
 	console.log(games);
 
-    addGames();
     addFilters();
+    addGames();
 }
 
 function addGames() {
@@ -70,8 +71,11 @@ function addFilters() {
 
     for (var i = 0; i < regProps.length; i++) {
         prop = regProps[i];
+        var x = "" + i;
+        propids[prop] = x;
+
         $('#reg_filters')
-            .append('<label class="btn btn-secondary">\n' +
+            .append('<label class="btn btn-secondary" propid="' + x + '">\n' +
                 '<input type="checkbox" autocomplete="off" value="' + prop
                     + '"> ' + prop + '\n' +
                 '</label>')
@@ -79,8 +83,11 @@ function addFilters() {
 
     for (var i = 0; i < personProps.length; i++) {
         prop = personProps[i];
+        var x = "p" + i;
+        propids[prop] = x;
+
         $('#person_filters')
-            .append('<label class="btn btn-secondary">\n' +
+            .append('<label class="btn btn-secondary" propid="' + x + '">\n' +
                 '<input type="checkbox"autocomplete="off" value="' + prop
                     + '"> ' + prop + '\n' +
                 '</label>')
@@ -152,7 +159,8 @@ function addGameToTable(game) {
     for (prop in games[game]) {
         if (games[game][prop]) {
             var i = allProperties.indexOf(prop);
-            propDivs += "<span class='prop-tip' propid='" + i + "'>" + prop + "</span>";
+            propDivs += "<button class='prop-tip btn btn-secondary btn-sm' type='button' " +
+                " propid='" + propids[prop] + "' disabled>" + prop + "</button>";
         }
     }
 
