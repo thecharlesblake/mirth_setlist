@@ -34,7 +34,6 @@ function processGameData(data) {
 
     for(var i = 1; i < data.length; i++) {
 		var game = data[i][0];
-        addGameToTable(game);
 
 		games[game] = {};
 		for (var j = 0; j < allProperties.length; j++) {
@@ -45,8 +44,16 @@ function processGameData(data) {
     }
 	console.log(games);
 
+    addGames();
     addFilters();
 }
+
+function addGames() {
+    for(game in games) {
+        addGameToTable(game);
+    }
+}
+
 
 function addFilters() {
     var regProps = [];
@@ -140,5 +147,15 @@ function updateTable() {
 }
 
 function addGameToTable(game) {
-    $('#game_table > tbody:last-child').append('<tr><td>' + game + '</td></tr>');
+    var propDivs = "";
+
+    for (prop in games[game]) {
+        if (games[game][prop]) {
+            var i = allProperties.indexOf(prop);
+            propDivs += "<span class='prop-tip' propid='" + i + "'>" + prop + "</span>";
+        }
+    }
+
+    $('#game_table > tbody:last-child').append('<tr><td><span>' + game + '</span>'
+        + propDivs + '</td></tr>');
 }
