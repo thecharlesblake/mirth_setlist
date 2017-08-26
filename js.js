@@ -1,11 +1,11 @@
 var sheetURL = "https://sheets.googleapis.com/v4/spreadsheets/1KTv54urT87_WelAXlEWk8ULr0ADBAa87LNHGZB4skvc/values/Sheet1?key=AIzaSyAcsLdmdmsWW35wIj9byeWD7RcXyOXYe8I"
 
-function onload() {
-    init();
-    requestSheet();
-}
+var games = {};
+var allProperties = [];
+var selectedProperties = [];
 
-function init() {
+function onload() {
+    requestSheet();
 }
 
 function requestSheet() {
@@ -17,7 +17,7 @@ function requestSheet() {
 function loadSuccess(data) {
     console.log("Connected to Sheets");
     gameData = data.values;
-    fillTable(gameData);
+    processGameData(gameData);
 }
 
 function loadFail(data) {
@@ -25,23 +25,79 @@ function loadFail(data) {
     console.log(data);
 }
 
-function fillTable(data) {
-	var properties = [];
+function processGameData(data) {
+    // Gets the list of allProperties
 	for (var i = 1; i < data[0].length; i++) {
-		properties.push(data[0][i]);
+        var prop = data[0][i];
+		allProperties.push(prop);
+        
+        // Adds the allProperties to the select
+        $('#property_select')
+            .append('<option value="' + prop + '">' + prop + '</option>');
 	}
 
-    var games = {};
     for(var i = 1; i < data.length; i++) {
 		var game = data[i][0];
-		$('#game_table > tbody:last-child').append('<tr><td>' + game + '</td></tr>');
+        addGameToTable(game);
 
 		games[game] = {};
-		for (var j = 0; j < properties.length; j++) {
-			var property = properties[j];
+		for (var j = 0; j < allProperties.length; j++) {
+			var property = allProperties[j];
 			var currentPropVal = data[i][1+j];
 			games[game][property] = currentPropVal === "TRUE" ? true : false;
 		}
     }
 	console.log(games);
+
+    // Init the select
+    $('#property_select').multiselect({
+        onChange: onChange
+    });
+}
+
+function onChange(option, checked) {
+    var property = $(option).val();
+
+    if (checked) {
+        if (selectedProperties.indexOf(property) <= -1) {
+            selectedProperties.push(property);
+        }
+    } else {
+        if (selectedProperties.indexOf(property) > -1) {
+            selectedProperties = selectedProperties.filter(p => p !== property);
+        }
+    } 
+    updateTable();
+}
+
+function updateTable() {
+    $('#game_table tr').remove();
+
+    for (game in games) {
+        var props = games[game];
+        var match = true;
+
+        for (property in props) {
+            var propVal = props[property];
+            
+            // If the property is selected, and the game doesn't have it,
+            // set match to false
+            if (selectedProperties.indexOf(property) > -1) {
+                if (propVal) {
+                    match = true;
+                } else {
+                    match = false;
+                    break;
+                }
+            }
+        }
+
+        if (match) {
+            addGameToTable(game);
+        }
+    }
+}
+
+function addGameToTable(game) {
+    $('#game_table > tbody:last-child').append('<tr><td>' + game + '</td></tr>');
 }
