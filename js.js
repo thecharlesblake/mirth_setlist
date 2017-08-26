@@ -29,20 +29,8 @@ function processGameData(data) {
     // Gets the list of allProperties
 	for (var i = 1; i < data[0].length; i++) {
         var prop = data[0][i];
-		allProperties.push(prop);
-        
-        // Add the filter
-        $('#filters')
-            .append('<label class="btn btn-primary">\n' +
-                '<input type="checkbox" autocomplete="off" value="' + prop
-                    + '"> ' + prop + '\n' +
-                '</label>')
+        allProperties.push(prop);
 	}
-
-    // Add filter logic
-    $('#filters label').click(function() {
-        onChange($(this).children().attr('value'), !$(this).hasClass('active'));
-    })
 
     for(var i = 1; i < data.length; i++) {
 		var game = data[i][0];
@@ -56,6 +44,58 @@ function processGameData(data) {
 		}
     }
 	console.log(games);
+
+    addFilters();
+}
+
+function addFilters() {
+    var regProps = [];
+    var personProps = [];
+
+    for (var i = 0; i < allProperties.length; i++) {
+        prop = allProperties[i];
+        if (prop.indexOf("Person") !== -1) {
+            personProps.push(prop);
+        } else {
+            regProps.push(prop);
+        }
+    }
+
+    for (var i = 0; i < regProps.length; i++) {
+        prop = regProps[i];
+        $('#reg_filters')
+            .append('<label class="btn btn-secondary">\n' +
+                '<input type="checkbox" autocomplete="off" value="' + prop
+                    + '"> ' + prop + '\n' +
+                '</label>')
+    }
+
+    for (var i = 0; i < personProps.length; i++) {
+        prop = personProps[i];
+        $('#person_filters')
+            .append('<label class="btn btn-secondary">\n' +
+                '<input type="checkbox"autocomplete="off" value="' + prop
+                    + '"> ' + prop + '\n' +
+                '</label>')
+    }
+
+    // Add filter logic
+    $('.filters label').click(function() {
+        onChange($(this).children().attr('value'), !$(this).hasClass('active'));
+    });
+
+    // Only one person filter at once
+	$('#person_filters label').click(function () { 
+        var clickedProp = $(this).children().attr('value');
+
+        $(this).parent('div').children('label').each(function () {
+            var otherProp = $(this).children().attr('value');
+            if (clickedProp != otherProp && $(this).hasClass('active')) {
+                $(this).removeClass('active');
+                onChange(otherProp, false);
+            }
+        });
+	});
 }
 
 function onChange(property, checked) {
