@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Blind Mirth: Setlist</title>
     <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
         integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-        crossorigin="anonymous">
+        crossorigin="anonymous"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
@@ -26,11 +27,14 @@
 
     <link rel="stylesheet" href="css.css">
     <script src="js.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
 </head>
-
 <body onload="onload()">
-    <div id="header">Blind Mirth: Setlist</div>
-	<div class="filter-wrapper explain"><b>Filters 🡻</b> (select multiple!)</div>
+	<div id="header">Blind Mirth: Setlist
+		<a href="https://docs.google.com/spreadsheets/d/1KTv54urT87_WelAXlEWk8ULr0ADBAa87LNHGZB4skvc/edit#gid=0" target="_blank">
+			<img id="sheets-icon" src="sheets.png">
+		</a>
+	</div>
 	<div class="filter-wrapper">
     	<div id="reg_filters" class="btn-group filters" data-toggle="buttons">
     	</div>
@@ -39,8 +43,8 @@
     	<div id="person_filters" class="btn-group filters" data-toggle="buttons">
 		</div>
     </div>
-    <table id="game_table" class="table">
-        <thead>
+    <table id="game_table" class="table table-striped">
+        <thead class="thead-inverse">
             <tr>
                 <th>Game</th>
                 <th>Features</th>
