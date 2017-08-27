@@ -155,7 +155,8 @@
 }
 
 #sheets-icon {
+    position: absolute;
+    right: 0;
     height: 2rem;
-    float: right;
     margin: .3rem;
 }
